@@ -1,87 +1,78 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
-import numpy as np
-from math import sqrt
-
-import os
-import os.path
-import time
-import json
-import sys
-import numpy as np
-import argparse
-import struct
 import cv2
+import numpy as np
+import os
+import time
+
 import mxnet as mx
-from mxnet import ndarray as nd
+from mxnet.contrib import onnx as onnx_mxnet
+import onnx
+from onnx import numpy_helper
+import onnxruntime as ort
+from onnx import helper
+from onnx import TensorProto
+
+#mxnet2onnx
+def mxnet2onnx_test():
+    sym = './mnet.25/mnet.25-symbol.json'
+    params = './mnet.25/mnet.25-0000.params'
+    
+    #NCHW
+    input_shape = [(1,3,640,640)]
+    
+    onnx_file = './mnet.25/onnx/mnet.25_onnx.onnx'
+    
+    #返回转换后的onnx模型的路径
+    converted_model_path = onnx_mxnet.export_model(sym, params, input_shape, np.float32, onnx_file) #np.float32导致Sub、Mul报错！！！
+    
+    #Check the model
+    onnx.checker.check_model(onnx_file)
+    print('The model is checked!')
 
 
-def get_feature(image_path, model):
+#onnx model inferrence
+def onnx_inferred_demo():
+    onnx_file = './mnet.25/onnx/mnet.25_onnx.onnx'
+    
+    image_path='./mnet.25/01.jpg'
     img = cv2.imread(image_path)
-    #img = img[...,::-1] #BGR->RGB
+    
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    
     img = np.transpose( img, (2,0,1) ) #HWC->CHW
     
-    embedding = None
-    input_blob = np.expand_dims(img, axis=0)
-    data = mx.nd.array(input_blob)
-    db = mx.io.DataBatch(data=(data,))
-    model.forward(db, is_train=False)
-    embedding = model.get_outputs()[0].asnumpy()
+    ort_session = ort.InferenceSession(onnx_file)
+    input_name = ort_session.get_inputs()[0].name #'data'
+    outputs = ort_session.get_outputs()[0].name 
     
-    _norm=np.linalg.norm(embedding)
-    print(_norm)
-    #embedding /= _norm  #归一化
+    #=32
+    #0:face_rpn_cls_prob_reshape_stride32
+    #1:face_rpn_bbox_pred_stride32
+    #2:face_rpn_landmark_pred_stride32
     
-    return embedding
-
-def parse_arguments(argv):
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--image_size', type=str, help='', default='3,640,640')
-    parser.add_argument('--gpu', type=int, help='', default=-1)
-    parser.add_argument('--model', type=str, help='', default='mnet.25,0')
+    #=16
+    #3:face_rpn_cls_prob_reshape_stride16
+    #4:face_rpn_bbox_pred_stride16
+    #5:face_rpn_landmark_pred_stride16
     
-    return parser.parse_args(argv)
-
-def main(args):
+    #=8
+    #6:face_rpn_cls_prob_reshape_stride8
+    #7:face_rpn_bbox_pred_stride8
+    #8:face_rpn_landmark_pred_stride8
     
-    print(args)
+    input_blob = np.expand_dims(img, axis=0).astype(np.float32) #NCHW
     
-    gpuid = args.gpu
-    if gpuid>=0:
-        ctx = mx.gpu(gpuid)
-    else:
-        ctx = mx.cpu()
-    vec = args.model.split(',')
-    assert len(vec)>1
-    prefix = vec[0]
-    epoch = int(vec[1])
-    image_shape = [int(x) for x in args.image_size.split(',')]
+    out = ort_session.run([outputs], input_feed={input_name: input_blob})
     
-    print('loading',prefix, epoch)
-    sym, arg_params, aux_params = mx.model.load_checkpoint(prefix, epoch)
-    
-    all_layers = sym.get_internals()
-    
-    sym = all_layers['face_rpn_cls_prob_reshape_stride32_output']
-    
-    
-    model = mx.mod.Module(symbol=sym, context=ctx, label_names = None)
-    model.bind(data_shapes=[('data', (1, 3, image_shape[1], image_shape[2]))])
-    model.set_params(arg_params, aux_params)
-    
-    
-    image_path2='01.jpg'
-    
-    fea2 = get_feature(image_path2, model)
-    
-    print(fea2)
-    print(fea2.shape)
-    
+    print(out[0])
+    print(out[0].shape)
 
 
 if __name__ == '__main__':
-  main(parse_arguments(sys.argv[1:]))
-
+    
+    
+    #mxnet2onnx_test() #==mxnet2onnx
+    
+    onnx_inferred_demo() #===onnx前向推导===
+    
+    
+    
