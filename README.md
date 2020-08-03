@@ -9,7 +9,7 @@ cv2 3.3.1
 # tested models
 arcface:from [ZQCNN](https://github.com/zuoqing1988/ZQCNN) [mobilefacenet-res2-6-10-2-dim512](https://pan.baidu.com/s/1_0O3kJ5dMmD-HdRwNR0Hpw#list/path=%2F)  
 retinaface:[mnet.25](https://link.zhihu.com/?target=https%3A//github.com/deepinsight/insightface/issues/669)  
-# steps
+
 # arcface  
 [Insightface中ArcFace MxNet2ONNX踩坑](https://zhuanlan.zhihu.com/p/165294876)  
 
