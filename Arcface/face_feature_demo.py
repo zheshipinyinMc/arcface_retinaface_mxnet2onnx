@@ -93,10 +93,6 @@ def main(args):
     print(fea2)
     print(fea2.shape)
     
-    #=====计算caffe模型和mxnet模型输出特征的余弦相似性=====
-    #fea_caffe=caffe_demo()
-    #score=similarity(fea_caffe, fea2[0])
-    #print(score)
     
 
 
