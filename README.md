@@ -1,3 +1,8 @@
+# Update  
+Retinaface fixed softmax bug.  
+Upsample is implemented using Resize.  
+Upsample is implemented using ConvTranspose.  
+
 # arcface_retinaface_mxnet2onnx
 arcface and retinaface model convert mxnet to onnx
 # environment
