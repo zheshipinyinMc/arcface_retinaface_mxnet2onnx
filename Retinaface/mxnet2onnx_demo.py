@@ -22,7 +22,7 @@ def mxnet2onnx_test():
     onnx_file = './mnet.25/onnx/mnet.25_onnx.onnx'
     
     #返回转换后的onnx模型的路径
-    converted_model_path = onnx_mxnet.export_model(sym, params, input_shape, np.float32, onnx_file) #np.float32导致Sub、Mul报错！！！
+    converted_model_path = onnx_mxnet.export_model(sym, params, input_shape, np.float32, onnx_file)
     
     #Check the model
     onnx.checker.check_model(onnx_file)

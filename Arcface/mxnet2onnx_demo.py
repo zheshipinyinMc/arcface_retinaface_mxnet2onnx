@@ -144,10 +144,6 @@ def onnx_modify_demo():
             new_nv = helper.make_tensor(input_name, TensorProto.FLOAT, [input_dim_val,1,1], b)
             graph.initializer.extend([new_nv])
     
-    #===将中间层输出添加到output，可以输出中间层结果===
-    new_nv=input_map['data']
-    #graph.output.extend([new_nv])
-    
     onnx.save(model, './mobilefacenet-res2-6-10-2-dim512/onnx/modelnew2_onnx.onnx')
 
 
