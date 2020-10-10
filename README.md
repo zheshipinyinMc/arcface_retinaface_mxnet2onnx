@@ -1,8 +1,8 @@
-# Update1
-[retinaface_mnet025_v1](http://insightface.ai/files/models/retinaface_mnet025_v1.zip)
-[retinaface_mnet025_v2](http://insightface.ai/files/models/retinaface_mnet025_v2.zip)
-In mxnet symbol, BN has fix_gamma, if fix_gamma is true, then set gamma to 1 and its gradient to 0, you can find this in mxnet API.
-for example, in retinaface_mnet025_v1, the output is different from 'conv_3_dw_batchnorm', because fix_gamma in 'conv_3_dw_batchnorm' is true，but its value is 0.000007107922556315316(you can see weight by Netron). So forward onnx model its('conv_3_dw_batchnorm') gamma is 0.000007107922556315316, but forward mxnet model, actually its'conv_3_dw_batchnorm' gamma is 1.
+# Update1 fix_gamma  
+[retinaface_mnet025_v1](http://insightface.ai/files/models/retinaface_mnet025_v1.zip)  
+[retinaface_mnet025_v2](http://insightface.ai/files/models/retinaface_mnet025_v2.zip)  
+In mxnet symbol, BN has fix_gamma, if fix_gamma is true, then set gamma to 1 and its gradient to 0, you can find this in [mxnet API](https://mxnet.apache.org/versions/1.7.0/api/python/docs/api/symbol/symbol.html#mxnet.symbol.BatchNorm).  
+In retinaface_mnet025_v1, fix_gamma in 'conv_3_dw_batchnorm' is true，but its value is 0.000007107922556315316(you can see weight by Netron).However, forward mxnet model, the gamma of 'conv_3_dw_batchnorm' is 1.  
 
 # Update  
 Retinaface fixed softmax bug.  
