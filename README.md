@@ -2,7 +2,7 @@
 [retinaface_mnet025_v1](http://insightface.ai/files/models/retinaface_mnet025_v1.zip)  
 [retinaface_mnet025_v2](http://insightface.ai/files/models/retinaface_mnet025_v2.zip)  
 In mxnet symbol, BN has fix_gamma, if fix_gamma is true, then set gamma to 1 and its gradient to 0, you can find this in [mxnet API](https://mxnet.apache.org/versions/1.7.0/api/python/docs/api/symbol/symbol.html#mxnet.symbol.BatchNorm).  
-In retinaface_mnet025_v1, fix_gamma in 'conv_3_dw_batchnorm' is true，but its value is 0.000007107922556315316(you can see weight by Netron).However, forward mxnet model, the gamma of 'conv_3_dw_batchnorm' is 1.  
+In retinaface_mnet025_v1, fix_gamma in 'conv_3_dw_batchnorm' is true，but its value is 0.000007107922556315316(you can see weight by Netron).However, forward mxnet model, the gamma of 'conv_3_dw_batchnorm' is 1.This bug may cause mxnet output is different from onnx model.        
 
 # Update  
 Retinaface fixed softmax bug.  
@@ -10,8 +10,10 @@ Upsample is implemented using Resize.
 Upsample is implemented using ConvTranspose.  
 
 # arcface_retinaface_mxnet2onnx
-arcface and retinaface model convert mxnet to onnx
+arcface and retinaface model convert mxnet to onnx  
+
 # environment
+Ubuntu 18.04  
 MxNet 1.5.0  
 onnx 1.7.0 (protobuf 3.0.0)  
 onnxruntime 1.3.0  
