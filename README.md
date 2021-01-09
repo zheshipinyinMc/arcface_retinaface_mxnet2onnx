@@ -1,3 +1,7 @@
+# Update2 models
+[retinaface_mnet025_v1](http://insightface.ai/files/models/retinaface_mnet025_v1.zip)  
+[retinaface_mnet025_v2](http://insightface.ai/files/models/retinaface_mnet025_v2.zip)  
+
 # Update1 fix_gamma  
 [retinaface_mnet025_v1](http://insightface.ai/files/models/retinaface_mnet025_v1.zip)  
 [retinaface_mnet025_v2](http://insightface.ai/files/models/retinaface_mnet025_v2.zip)  
