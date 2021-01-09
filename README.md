@@ -1,6 +1,6 @@
 # Update2 models
-[arcface](链接：https://pan.baidu.com/s/1nKMc7y7Wqk5iI4v-QSfBLg) 提取码：jks7  
-[retinaface](链接：https://pan.baidu.com/s/1drEytw2lpBiJJmfHycsM3A) 提取码：otx7  
+[arcface](https://pan.baidu.com/s/1nKMc7y7Wqk5iI4v-QSfBLg) 提取码：jks7  
+[retinaface](https://pan.baidu.com/s/1drEytw2lpBiJJmfHycsM3A) 提取码：otx7  
 
 # Update1 fix_gamma  
 [retinaface_mnet025_v1](http://insightface.ai/files/models/retinaface_mnet025_v1.zip)  
